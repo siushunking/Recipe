@@ -1,10 +1,12 @@
-import { useRef, useState } from 'react'
-import { useFetch } from '../../hook/useFetch'
 
+import {useHistory} from 'react-router-dom'  
+import { useState, useRef, useEffect } from 'react'
+import { useFetch } from '../../hook/useFetch'
 // styles
 import './Create.css'
 
 export default function Create() {  
+  let history = useHistory();
   const [title, setTitle] = useState('')
   const [method, setMethod] = useState('')
   const [cookingTime, setCookingTime] = useState('')
@@ -12,23 +14,29 @@ export default function Create() {
   const [ingredients, setIngredients] = useState([])
   const ingredientInput = useRef(null)
 
-  const {postData, data, error} = useFetch('http://localhost:3000/recipes', 'POST')
-
+  const { postData, data, error } = useFetch('http://localhost:3000/recipes', 'POST')
+  
   const handleSubmit = (e) => {
     e.preventDefault()
     postData({ title, ingredients, method, cookingTime: cookingTime + ' minutes' })
   }
 
-  const handleAdd = (e) =>{
+  const handleAdd = (e) => {
     e.preventDefault()
     const ing = newIngredient.trim()
-    if(ing && !ingredients.includes(ing)){
-      setIngredients(prevIngredients => [...prevIngredients, ing])
+
+    if (ing && !ingredients.includes(ing)) {
+      setIngredients(prevIngredients => [...prevIngredients, newIngredient])
     }
     setNewIngredient('')
-    console.log(ingredients);
+    ingredientInput.current.focus()
   }
 
+  useEffect(() => {
+    if (data) {
+      history.push('/')
+    }
+  }, [data, history])
 
   return (
     <div className="create">
@@ -46,21 +54,18 @@ export default function Create() {
         </label>
 
         <label>
-          <span>Recipe ingredients:</span>
-          <div className='ingredients'>
-
-            <input type="text"
-            onChange={(e)=>setNewIngredient(e.target.value)
-            }
-            value={newIngredient}
-            >
-            </input>
-            Current ingredients: {ingredients.map(i => <em> {i}, </em> )}
-            <button className='btn' onClick={handleAdd}>add</button>
+          <span>Recipe Ingredients:</span>
+          <div className="ingredients">
+            <input 
+              type="text" 
+              onChange={(e) => setNewIngredient(e.target.value)}
+              value={newIngredient}
+              ref={ingredientInput}
+            />
+            <button onClick={handleAdd} className="btn">add</button>
           </div>
         </label>
-
-        {/* recipe ingredients here */}
+        <p>Current ingredients: {ingredients.map(i => <em key={i}>{i}, </em>)}</p>
 
         <label>
           <span>Recipe Method:</span>

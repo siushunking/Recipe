@@ -5,6 +5,7 @@ import Search from './pages/search/Search'
 import Recipe from './pages/recipe/Recipe'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
+import Searchbar from './components/Searchbar'
 
 function App() {
   return (
