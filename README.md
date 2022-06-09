@@ -1,4 +1,6 @@
-# there is a hook which is about fetch api  in the hook folder, you can easy and clear fetch api. 
+#  
+
+there is a hook which is about fetch api  in the hook folder, you can easy and clear fetch api. 
 
 ```
 import { useState, useEffect } from "react"
@@ -44,4 +46,35 @@ export const useFetch = (url) => {
 
   return { data, isPending, error }
 }
+```
+
+
+get 
+ ```
+  const { error, isPending, data: recipe } = useFetch(url)
+      {recipe && (
+        <>
+          <h2 className="page-title">{recipe.title}</h2>
+          <p>Takes {recipe.cookingTime} to cook.</p>
+          <ul>
+            {recipe.ingredients.map(ing => <li key={ing}>{ing}</li>)}
+          </ul>
+          <p className="method">{recipe.method}</p>
+        </>
+      )}
+```
+
+
+post
+```
+      {recipe && (
+        <>
+          <h2 className="page-title">{recipe.title}</h2>
+          <p>Takes {recipe.cookingTime} to cook.</p>
+          <ul>
+            {recipe.ingredients.map(ing => <li key={ing}>{ing}</li>)}
+          </ul>
+          <p className="method">{recipe.method}</p>
+        </>
+      )}
 ```
